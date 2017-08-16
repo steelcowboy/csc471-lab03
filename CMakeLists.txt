@@ -33,7 +33,7 @@ if(NOT GLM_INCLUDE_DIR)
 endif()
 include_directories(${GLM_INCLUDE_DIR})
 
-# Get the GLFW environment variable. There should be a CMakeLists.txt in the 
+# Get the GLFW environment variable. There should be a CMakeLists.txt in the
 # specified directory.
 set(GLFW_DIR "$ENV{GLFW_DIR}")
 if(NOT GLFW_DIR)

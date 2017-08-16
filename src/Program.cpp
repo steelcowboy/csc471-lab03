@@ -13,12 +13,12 @@ Program::Program() :
 	pid(0),
 	verbose(true)
 {
-	
+
 }
 
 Program::~Program()
 {
-	
+
 }
 
 void Program::setShaderNames(const string &v, const string &f)
@@ -30,17 +30,17 @@ void Program::setShaderNames(const string &v, const string &f)
 bool Program::init()
 {
 	GLint rc;
-	
+
 	// Create shader handles
 	GLuint VS = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FS = glCreateShader(GL_FRAGMENT_SHADER);
-	
+
 	// Read shader sources
 	const char *vshader = GLSL::textFileRead(vShaderName.c_str());
 	const char *fshader = GLSL::textFileRead(fShaderName.c_str());
 	glShaderSource(VS, 1, &vshader, NULL);
 	glShaderSource(FS, 1, &fshader, NULL);
-	
+
 	// Compile vertex shader
 	glCompileShader(VS);
 	glGetShaderiv(VS, GL_COMPILE_STATUS, &rc);
@@ -51,7 +51,7 @@ bool Program::init()
 		}
 		return false;
 	}
-	
+
 	// Compile fragment shader
 	glCompileShader(FS);
 	glGetShaderiv(FS, GL_COMPILE_STATUS, &rc);
@@ -62,7 +62,7 @@ bool Program::init()
 		}
 		return false;
 	}
-	
+
 	// Create the program and link
 	pid = glCreateProgram();
 	glAttachShader(pid, VS);
@@ -76,7 +76,7 @@ bool Program::init()
 		}
 		return false;
 	}
-	
+
 	GLSL::checkError(GET_FILE_LINE);
 	return true;
 }

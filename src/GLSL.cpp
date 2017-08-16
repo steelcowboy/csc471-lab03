@@ -52,11 +52,11 @@ void printShaderInfoLog(GLuint shader)
 	GLint infologLength = 0;
 	GLint charsWritten  = 0;
 	GLchar *infoLog;
-	
+
 	checkError(GET_FILE_LINE);
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLength);
 	checkError(GET_FILE_LINE);
-	
+
 	if(infologLength > 0) {
 		infoLog = (GLchar *)malloc(infologLength);
 		if(infoLog == NULL) {
@@ -75,11 +75,11 @@ void printProgramInfoLog(GLuint program)
 	GLint infologLength = 0;
 	GLint charsWritten  = 0;
 	GLchar *infoLog;
-	
+
 	checkError(GET_FILE_LINE);
 	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infologLength);
 	checkError(GET_FILE_LINE);
-	
+
 	if(infologLength > 0) {
 		infoLog = (GLchar *)malloc(infologLength);
 		if(infoLog == NULL) {
@@ -98,7 +98,7 @@ void checkVersion()
 	int major, minor;
 	major = minor = 0;
 	const char *verstr = (const char *)glGetString(GL_VERSION);
-	
+
 	if((verstr == NULL) || (sscanf(verstr, "%d.%d", &major, &minor) != 2)) {
 		printf("Invalid GL_VERSION format %d.%d\n", major, minor);
 	}

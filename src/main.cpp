@@ -39,7 +39,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 
 //data necessary to give our triangle data to OGL
-GLuint vertexbuffer; 
+GLuint vertexbuffer;
 
 static void error_callback(int error, const char *description)
 {
@@ -60,7 +60,7 @@ static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
 	double posX, posY;
 	float newPt[2];
 	if (action == GLFW_PRESS) {
-		glfwGetCursorPos(window, &posX, &posY);	
+		glfwGetCursorPos(window, &posX, &posY);
 		cout << "Pos X " << posX <<  " Pos Y " << posY << endl;
 		//change this to be the points converted to WORLD
 		//THIS IS BROKEN< YOU GET TO FIX IT - yay!
@@ -76,7 +76,7 @@ static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
 
 //if the window is resized, capture the new size and reset the viewport
 static void resize_callback(GLFWwindow *window, int in_width, int in_height) {
-	//get the window size - may be different then pixels for retina	
+	//get the window size - may be different then pixels for retina
    int width, height;
    glfwGetFramebufferSize(window, &width, &height);
    glViewport(0, 0, width, height);
@@ -95,7 +95,7 @@ static void initGeom() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	//actually memcopy the data - only do this once
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_DYNAMIC_DRAW);
-	
+
 	//we need to set up the vertex array
 	glEnableVertexAttribArray(0);
 	//key function to get up how many elements to pull out at a time (3)
@@ -167,7 +167,7 @@ static void render()
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
    glBindVertexArray(0);
-	
+
 	prog->unbind();
 
 	// Pop matrix stacks.

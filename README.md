@@ -61,9 +61,9 @@ For compatibility issues with the old version of g++ installed on the lab
 machines, we will be using these files on my home directory. Download these
 and extract them somewhere (e.g., `~/lib/`).
 
-- GLM: <http://github.com/g-truc/glm> 
-- GLFW: cp ~zwood/lib/glfw-3.1.2.zip lib/. 
-- GLEW: <http://glew.sourceforge.net/> 
+- GLM: <http://github.com/g-truc/glm>
+- GLFW: cp ~zwood/lib/glfw-3.1.2.zip lib/.
+- GLEW: <http://glew.sourceforge.net/>
 - Compile the source by typing `make`. (This could take a while.)
 
 

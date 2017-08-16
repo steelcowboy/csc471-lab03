@@ -24,7 +24,7 @@
 ///
 ///     GLEE compiles with GNU C++ (##__VA_ARGS__ is the culprit). So just about
 /// every compiler supports it, and any warnings you get about GNU should be
-/// able to be silenced by -Wgnu. 
+/// able to be silenced by -Wgnu.
 ///
 /// USAGE
 ///
@@ -226,34 +226,34 @@ struct glee_api {
 
         OpenGLStateErrorInfo stateErrors = GetOpenGLStateErrors();
         if (stateErrors.encounteredError) {
-            
+
             std::cerr << "{" << fileName << ":" << lineNumber
              << " (" << functionName << ")} opengl assertion failure: "
              << message << std::endl << std::endl;
-            
+
             if (oglFuncName.length() > 0) {
                 std::string causeMessages = "";
                 OpenGLAdditionalErrorInfo additionalInfo = RequestOpenGLAPIErrorInfoForFunction(oglFuncName);
                 for (std::vector<OpenGLEnumInfo>::iterator itr  = stateErrors.rawErrors.begin();
                     itr != stateErrors.rawErrors.end(); itr++) {
-                    
+
                     std::vector<std::string> errorStrings
                      = additionalInfo.errorsForEnumInfo(*itr);
                     for (std::vector<std::string>::iterator strItr = errorStrings.begin();
                         strItr != errorStrings.end(); strItr++) {
-                        
+
                         causeMessages += *strItr;
                     }
                 }
-                
+
                 /// General causes
                 std::cerr << "General Information: " << stateErrors.description << std::endl << std::endl;
-                
+
                 if (causeMessages.length() > 0) {
                     /// Specific possible causes
                     std::cerr << "Possible causes: " << causeMessages << std::endl << std::endl;
                 }
-                
+
                 if (additionalInfo.url.length() > 0) {
                     std::cerr << "For more information visit: " << additionalInfo.url << std::endl << std::endl;
                 }
@@ -262,7 +262,7 @@ struct glee_api {
             assert(false);
         }
     }
-    
+
     ///
     static inline std::string
     joinStringsWithSeperator(
@@ -281,112 +281,112 @@ struct glee_api {
     /// string based on the descriptions for each error available here:
     /// https://www.khronos.org/opengles/sdk/docs/man/xhtml/glGetError.xml
     struct OpenGLEnumInfo {
-        
+
         /// The OpenGL error enumeration we seek to get information about.
         GLenum enumValue;
-        
+
         /// Constructs an OpenGLEnumInfo with an enum value.
         OpenGLEnumInfo(GLenum _enumValue) : enumValue(_enumValue) {}
-        
+
         /// Returns whether `enumValue` contains `value` in its bits.
         bool
         enumMatches(GLenum value) const
         {
             return enumValue == value;
         }
-        
-        
+
+
         /// The error message to append to any given error.
         static const std::string
         kGeneralErrorDescription()
         {
             return std::string("The offending command is ignored and has no other side effect than to set the error flag.");
         }
-        
+
         /// The generic meaning to GL_INVALID_ENUM
         static const std::string
         kInvalidEnumDescription()
         {
             return std::string("(GL_INVALID_ENUM) An unacceptable value is specified for an enumerated argument.");
         }
-        
+
         /// The generic meaning to GL_INVALID_VALUE
         static const std::string
         kInvalidValueDescription()
         {
             return std::string("(GL_INVALID_VALUE) A numeric argument is out of range.");
         }
-        
+
         /// The generic meaning to GL_INVALID_OPERATION
         static const std::string
         kInvalidOperationDescription()
         {
             return std::string("(GL_INVALID_OPERATION) The specified operation is not allowed in the current state.");
         }
-        
+
         /// The generic meaning to GL_INVALID_FRAMEBUFFER_OPERATION
         static const std::string
         kInvalidFramebufferOperationDescription()
         {
             return std::string("(GL_INVALID_FRAMEBUFFER_OPERATION) The command is trying to render to or read from the framebuffer while the currently bound framebuffer is not framebuffer complete (i.e. the return value from glCheckFramebufferStatus is not GL_FRAMEBUFFER_COMPLETE).");
         }
-        
+
         /// The generic meaning to GL_OUT_OF_MEMORY
         static const std::string
         kOutOfMemoryDescription()
         {
             return std::string("(GL_OUT_OF_MEMORY) There is not enough memory left to execute the command. The state of the GL is undefined.");
         }
-        
+
         /// The meaning of GL_NO_ERROR
         static const std::string
         kNoErrorDescription()
         {
             return std::string("(GL_NO_ERROR) No error has been recorded.");
         }
-        
+
         /// Whether this error contains GL_INVALID_ENUM
         bool
         invalidEnum() const
         {
             return enumMatches(GLenum(GL_INVALID_ENUM));
         }
-        
+
         /// Whether this error contains GL_INVALID_VALUE
         bool
         invalidValue() const
         {
             return enumMatches(GLenum(GL_INVALID_VALUE));
         }
-        
+
         /// Whether this error contains GL_INVALID_OPERATION
         bool
         invalidOperation() const
         {
             return enumMatches(GLenum(GL_INVALID_OPERATION));
         }
-        
+
         /// Whether this error contains GL_INVALID_FRAMEBUFFER_OPERATION
         bool
         invalidFramebufferOperation() const
         {
             return enumMatches(GLenum(GL_INVALID_FRAMEBUFFER_OPERATION));
         }
-        
+
         /// Whether this error contains GL_OUT_OF_MEMORY
         bool
         outOfMemory() const
         {
             return enumMatches(GLenum(GL_OUT_OF_MEMORY));
         }
-        
+
         /// Whether this error is GL_NO_ERROR
         bool
         noError() const
         {
             return enumValue == GLenum(GL_NO_ERROR);
         }
-        
+
         /// The concatenated result of each error and its generic description.
         std::string
         generalErrorDescription() const
@@ -407,14 +407,14 @@ struct glee_api {
             if (outOfMemory()) {
                 result += kOutOfMemoryDescription() + " ";
             }
-            
+
             if (noError()) {
                 result += kNoErrorDescription();
             }
             else {
                 result += kGeneralErrorDescription();
             }
-            
+
             return result;
         }
     };
@@ -427,7 +427,7 @@ struct glee_api {
 
     /// A wrapper struct used to collect specific information about a particular OpenGL function.
     /// In particular, the list of errors for each type is given and then can be used in other areas.
-    /// The intention of this class is to be used with OpenGLAPIDocRequester to encapsulate, in a 
+    /// The intention of this class is to be used with OpenGLAPIDocRequester to encapsulate, in a
     /// generic way, the data present in the OpenGL documentation.
     struct OpenGLAdditionalErrorInfo {
 
@@ -440,78 +440,78 @@ struct glee_api {
 
         /// A map of various OpenGL errors and a list of error descriptions that accompany each.
         std::map< GLenum, std::vector<std::string> > errorDescriptions;
-        
+
         /// The errors for GL_INVALID_ENUM
         const std::vector<std::string> &
         invalidEnum() const
         {
             return errorDescriptions.at(GLenum(GL_INVALID_ENUM));
         }
-        
+
         /// The errors for GL_INVALID_VALUE
         const std::vector<std::string> &
         invalidValue() const
         {
             return errorDescriptions.at(GLenum(GL_INVALID_VALUE));
         }
-        
+
         /// The errors for GL_INVALID_OPERATION
         const std::vector<std::string> &
         invalidOperation() const
         {
             return errorDescriptions.at(GLenum(GL_INVALID_OPERATION));
         }
-        
+
         /// The errors for GL_INVALID_FRAMEBUFFER_OPERATION
         const std::vector<std::string> &
         invalidFramebufferOperation() const
         {
             return errorDescriptions.at(GLenum(GL_INVALID_FRAMEBUFFER_OPERATION));
         }
-        
+
         /// The errors for GL_OUT_OF_MEMORY
         const std::vector<std::string> &
         outOfMemory() const
         {
             return errorDescriptions.at(GLenum(GL_OUT_OF_MEMORY));
         }
-        
-        
-        
+
+
+
         /// The concatenated result of all the strings in `invalidEnum`
         std::string
         invalidEnumDescription() const
         {
             return joinStringsWithSeperator(invalidEnum(), " ");
         }
-        
+
         /// The concatenated result of all the strings in `invalidValue`
         std::string
         invalidValueDescription() const {
             return joinStringsWithSeperator(invalidValue(), " ");
         }
-        
+
         /// The concatenated result of all the strings in `invalidOperation`
         std::string
         invalidOperationDescription() const
         {
             return joinStringsWithSeperator(invalidOperation(), " ");
         }
-        
+
         /// The concatenated result of all the strings in `invalidFramebufferOperation`
         std::string
         invalidFramebufferOperationDescription() const
         {
             return joinStringsWithSeperator(invalidFramebufferOperation(), " ");
         }
-        
+
         /// The concatenated result of all the strings in `outOfMemory`
         std::string
         outOfMemoryDescription() const
         {
             return joinStringsWithSeperator(outOfMemory(), " ");
         }
-        
+
         /// Constructs this type with a function and all of its associated error descriptions.
         OpenGLAdditionalErrorInfo(
             const std::string & _functionName,
@@ -532,7 +532,7 @@ struct glee_api {
             errorDescriptions[GLenum(GL_INVALID_FRAMEBUFFER_OPERATION)] = invalidFramebufferOperation;
             errorDescriptions[GLenum(GL_OUT_OF_MEMORY)] = outOfMemory;
         }
-        
+
         /// Returns the the list of errors correlate to the enums found in `info`
         std::vector<std::string>
         errorsForEnumInfo(const OpenGLEnumInfo & info) const
@@ -553,10 +553,10 @@ struct glee_api {
             if (info.outOfMemory()) {
                 result.insert(result.end(), outOfMemory().begin(), outOfMemory().end());
             }
-            
+
             return result;
         }
-        
+
         /// Returns all of error messages congealed together into a single string.
         std::string
         description() const
@@ -582,28 +582,28 @@ struct glee_api {
         GLenum error = glGetError();
         std::vector<OpenGLEnumInfo> rawErrors;
         bool foundError = false;
-        
+
         if (error != GLenum(GL_NO_ERROR)) {
             foundError = true;
         }
-        
+
         while (error != GLenum(GL_NO_ERROR)) {
             OpenGLEnumInfo info = OpenGLEnumInfo(error);
             toRet += info.generalErrorDescription();
             rawErrors.push_back(info);
-            
+
             error = glGetError();
         }
-        
+
         OpenGLStateErrorInfo toReturn;
-        
+
         toReturn.encounteredError = foundError;
         toReturn.description = toRet;
         toReturn.rawErrors = rawErrors;
-        
+
         return toReturn;
     }
-    
+
     /// Tries to query the OpenGL website https://www.opengl.org for the
     /// documentation of `function`.
     static OpenGLAdditionalErrorInfo
@@ -612,22 +612,22 @@ struct glee_api {
     {
         std::vector<std::string> invalidEnum, invalidValue, invalidOperation, invalidFramebufferOperation, outOfMemory, errorNotes;
         std::string url;
-        
+
 #ifdef GLEE_NETWORKING
         URL_FILE * urlDataStream = NULL;
         int subStringLen = (int) function.length();
         std::string functionGroupName;
-        
+
         while (urlDataStream == NULL && subStringLen > 0) {
             functionGroupName = function.substr(0, (std::string::size_type)subStringLen);
             url = "https://www.opengl.org/sdk/docs/man/html/" + functionGroupName + ".xhtml";
-            
+
             urlDataStream = url_fopen(url.c_str(), "r");
             if (urlDataStream == NULL) {
                 subStringLen--;
             }
         }
-        
+
         if (urlDataStream != NULL) {
             std::string urlData = "";
             xmlChar buffer[256] = {'\0'};
@@ -646,7 +646,7 @@ struct glee_api {
              = findXMLNodeChildrenForXPath("//div[@id='errors']/p", root);
             for (std::vector<xmlNodePtr>::iterator itr = errorSearch.begin();
                 itr != errorSearch.end(); itr++) {
-                
+
                 std::string content = unannotedXMLNodeContent(*itr);
                 if (content.find("GL_INVALID_ENUM") != std::string::npos) {
                     invalidEnum.push_back(content);
@@ -667,7 +667,7 @@ struct glee_api {
                     errorNotes.push_back(content);
                 }
             }
-            
+
             xmlFreeDoc(doc);
             url_fclose(urlDataStream);
         }
@@ -678,12 +678,12 @@ struct glee_api {
              << std::endl;
         }
 #endif // GLEE_NETWORKING
-        
+
         return OpenGLAdditionalErrorInfo(function, url, invalidEnum,
          invalidValue, invalidOperation, invalidFramebufferOperation,
          outOfMemory, errorNotes);
     }
-    
+
 #endif // GLEE_OVERWRITE_GL_FUNCTIONS
 
 
@@ -693,7 +693,7 @@ struct glee_api {
 ///
 
 #if defined(GLEE_NETWORKING)
-    
+
     ///
     enum fcurl_type_e {
         CFTYPE_NONE=0,
@@ -709,7 +709,7 @@ struct glee_api {
             CURL *curl;
             FILE *file;
         } handle;                   /* handle */
-        
+
         char *buffer;               /* buffer to store cached data*/
         size_t buffer_len;          /* currently allocated buffers length */
         size_t buffer_pos;          /* end of data in buffer*/
@@ -718,7 +718,7 @@ struct glee_api {
 
     ///
     typedef struct fcurl_data URL_FILE;
-    
+
     /// Adapted from "node.cc" in the C++ libxml wrapper found here:
     ///     http://ftp.gnome.org/pub/GNOME/sources/libxml++/3.0/
     static std::vector<xmlNodePtr>
@@ -726,37 +726,37 @@ struct glee_api {
         const std::string & xpath,
         xmlNode * node)
     {
-        
+
         std::vector<xmlNodePtr> nodes;
         xmlXPathContextPtr ctxt = xmlXPathNewContext(node->doc);
         assert(ctxt != NULL);
         ctxt->node = node;
-        
+
         xmlXPathObjectPtr result = xmlXPathEval((const xmlChar*)xpath.c_str(), ctxt);
         assert(result != NULL); // Bad path given
         assert(result->type == XPATH_NODESET); // Only nodeset result types are supported.
-        
+
         xmlNodeSetPtr nodeset = result->nodesetval;
         if (nodeset && !xmlXPathNodeSetIsEmpty(nodeset)) {
             const int count = xmlXPathNodeSetGetLength(nodeset);
             nodes.reserve((std::vector<xmlNodePtr>::size_type)count);
             for (int i = 0; i != count; ++i) {
                 xmlNodePtr cnode = xmlXPathNodeSetItem(nodeset, i);
-                
+
                 if (!cnode) {
                     std::cerr << "{" << __FILE__ << ":" << __LINE__
                      << " (" << __FUNCTION__ << ")} "
                      << "The xmlNode found was null???" << std::endl;
                     continue;
                 }
-                
+
                 if (cnode->type == XML_NAMESPACE_DECL) {
                     continue;
                 }
                 nodes.push_back(cnode);
             }
         }
-        
+
         xmlXPathFreeObject(result);
         xmlXPathFreeContext(ctxt);
         return nodes;
@@ -783,7 +783,7 @@ struct glee_api {
             result += unannotedXMLNodeContent(child);
             child = child->next;
         }
-        
+
         return result;
     }
 
@@ -794,7 +794,7 @@ struct glee_api {
         static CURLM * __multi_handle = NULL;
         return &__multi_handle;
     }
-    
+
     ///
     static CURLM *
     multi_handle()
@@ -812,12 +812,12 @@ struct glee_api {
     {
         char *newbuff;
         size_t rembuff;
-        
+
         URL_FILE *url = (URL_FILE *)userp;
         size *= nitems;
-        
+
         rembuff=url->buffer_len - url->buffer_pos; /* remaining space in buffer */
-        
+
         if(size > rembuff) {
             /* not enough space in buffer */
             newbuff = (char *) realloc(url->buffer, url->buffer_len + (size - rembuff));
@@ -831,10 +831,10 @@ struct glee_api {
                 url->buffer=newbuff;
             }
         }
-        
+
         memcpy(&url->buffer[url->buffer_pos], buffer, size);
         url->buffer_pos += size;
-        
+
         return size;
     }
 
@@ -850,26 +850,26 @@ struct glee_api {
         struct timeval timeout;
         int rc;
         CURLMcode mc; /* curl_multi_fdset() return code */
-        
+
         /* only attempt to fill buffer if transactions still running and buffer
          * doesn't exceed required size already
          */
         if((!file->still_running) || (file->buffer_pos > want))
             return 0;
-        
+
         /* attempt to fill buffer */
         do {
             int maxfd = -1;
             long curl_timeo = -1;
-            
+
             FD_ZERO(&fdread);
             FD_ZERO(&fdwrite);
             FD_ZERO(&fdexcep);
-            
+
             /* set a suitable timeout to fail on */
             timeout.tv_sec = 60; /* 1 minute */
             timeout.tv_usec = 0;
-            
+
             curl_multi_timeout(multi_handle(), &curl_timeo);
             if(curl_timeo >= 0) {
                 timeout.tv_sec = curl_timeo / 1000;
@@ -878,21 +878,21 @@ struct glee_api {
                 else
                     timeout.tv_usec = (curl_timeo % 1000) * 1000;
             }
-            
+
             /* get file descriptors from the transfers */
             mc = curl_multi_fdset(multi_handle(), &fdread, &fdwrite, &fdexcep, &maxfd);
-            
+
             if(mc != CURLM_OK) {
                 fprintf(stderr, "curl_multi_fdset() failed, code %d.\n", mc);
                 break;
             }
-            
+
             /* On success the value of maxfd is guaranteed to be >= -1. We call
              select(maxfd + 1, ...); specially in case of (maxfd == -1) there are
              no fds ready yet so we call select(0, ...) --or Sleep() on Windows--
              to sleep 100ms, which is the minimum suggested value in the
              curl_multi_fdset() doc. */
-            
+
             if(maxfd == -1) {
     #ifdef _WIN32
                 Sleep(100);
@@ -908,12 +908,12 @@ struct glee_api {
                  If you need access to the original value save a copy beforehand. */
                 rc = select(maxfd+1, &fdread, &fdwrite, &fdexcep, &timeout);
             }
-            
+
             switch(rc) {
                 case -1:
                     /* select error */
                     break;
-                    
+
                 case 0:
                 default:
                     /* timeout or readable/writable sockets */
@@ -943,7 +943,7 @@ struct glee_api {
             memmove(file->buffer,
                     &file->buffer[want],
                     (file->buffer_pos - want));
-            
+
             file->buffer_pos -= want;
         }
         return 0;
@@ -956,47 +956,47 @@ struct glee_api {
     {
         /* this code could check for URLs or types in the 'url' and
          basically use the real fopen() for standard files */
-        
+
         URL_FILE *file;
         (void)operation;
-        
+
         file = (URL_FILE *) malloc(sizeof(URL_FILE));
         if(!file)
             return NULL;
-        
+
         memset(file, 0, sizeof(URL_FILE));
-        
+
         if((file->handle.file=fopen(url, operation)))
             file->type = CFTYPE_FILE; /* marked as URL */
-        
+
         else {
             file->type = CFTYPE_CURL; /* marked as URL */
             file->handle.curl = curl_easy_init();
-            
+
             curl_easy_setopt(file->handle.curl, CURLOPT_URL, url);
             curl_easy_setopt(file->handle.curl, CURLOPT_WRITEDATA, file);
             curl_easy_setopt(file->handle.curl, CURLOPT_VERBOSE, 0L);
             curl_easy_setopt(file->handle.curl, CURLOPT_WRITEFUNCTION, write_callback);
-            
+
             if(!multi_handle())
                 *multi_handle_addr() = curl_multi_init();
-            
+
             curl_multi_add_handle(multi_handle(), file->handle.curl);
-            
+
             /* lets start the fetch */
             curl_multi_perform(multi_handle(), &file->still_running);
-            
+
             if((file->buffer_pos == 0) && (!file->still_running)) {
                 /* if still_running is 0 now, we should return NULL */
-                
+
                 /* make sure the easy handle is not in the multi handle anymore */
                 curl_multi_remove_handle(multi_handle(), file->handle.curl);
-                
+
                 /* cleanup */
                 curl_easy_cleanup(file->handle.curl);
-                
+
                 free(file);
-                
+
                 file = NULL;
             }
         }
@@ -1008,29 +1008,29 @@ struct glee_api {
     url_fclose(URL_FILE *file)
     {
         int ret=0;/* default is good return */
-        
+
         switch(file->type) {
             case CFTYPE_FILE:
                 ret=fclose(file->handle.file); /* passthrough */
                 break;
-                
+
             case CFTYPE_CURL:
                 /* make sure the easy handle is not in the multi handle anymore */
                 curl_multi_remove_handle(multi_handle(), file->handle.curl);
-                
+
                 /* cleanup */
                 curl_easy_cleanup(file->handle.curl);
                 break;
-                
+
             default: /* unknown or supported type - oh dear */
                 ret=EOF;
                 errno=EBADF;
                 break;
         }
-        
+
         free(file->buffer);/* free any allocated buffer space */
         free(file);
-        
+
         return ret;
     }
 
@@ -1043,43 +1043,43 @@ struct glee_api {
         URL_FILE *file)
     {
         size_t want;
-        
+
         switch(file->type) {
             case CFTYPE_FILE:
                 want = fread(ptr, size, nmemb, file->handle.file);
                 break;
-                
+
             case CFTYPE_CURL:
                 want = nmemb * size;
-                
+
                 fill_buffer(file, want);
-                
+
                 /* check if theres data in the buffer - if not fill_buffer()
                  * either errored or EOF */
                 if(!file->buffer_pos)
                     return 0;
-                
+
                 /* ensure only available data is considered */
                 if(file->buffer_pos < want)
                     want = file->buffer_pos;
-                
+
                 /* xfer data to caller */
                 memcpy(ptr, file->buffer, want);
-                
+
                 use_buffer(file, want);
-                
+
                 want = want / size;     /* number of items */
                 break;
-                
+
             default: /* unknown or supported type - oh dear */
                 want = 0;
                 errno = EBADF;
                 break;
-                
+
         }
         return want;
     }
-    
+
 #endif // defined(GLEE_NETWORKING)
 
 ////////////////////////////////////////////////////////////////////////////////
