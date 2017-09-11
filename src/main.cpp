@@ -4,8 +4,7 @@ https://github.com/nshkurkin/glee
 */
 
 #include <iostream>
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "GLSL.h"
@@ -15,10 +14,6 @@ https://github.com/nshkurkin/glee
 // value_ptr for glm
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
-/* to use glee */
-#define GLEE_OVERWRITE_GL_FUNCTIONS
-#include "glee.hpp"
 
 using namespace std;
 using namespace glm;
@@ -30,7 +25,7 @@ string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog; //our shader program
 
 /* Global data associated with triangle geometry - this will likely vary
-   in later programs - so is left explicit for now  */
+	in later programs - so is left explicit for now  */
 GLuint VertexArrayID;
 static const GLfloat g_vertex_buffer_data[] = {
 -0.5f, -0.5f, 0.0f,
@@ -77,9 +72,9 @@ static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
 //if the window is resized, capture the new size and reset the viewport
 static void resize_callback(GLFWwindow *window, int in_width, int in_height) {
 	//get the window size - may be different then pixels for retina
-   int width, height;
-   glfwGetFramebufferSize(window, &width, &height);
-   glViewport(0, 0, width, height);
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+	glViewport(0, 0, width, height);
 }
 
 /*Note that any gl calls must always happen after a GL state is initialized */
@@ -161,12 +156,12 @@ static void render()
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 	glUniformMatrix4fv(prog->getUniform("MV"), 1, GL_FALSE, value_ptr(MV->topMatrix()));
 
-   glBindVertexArray(VertexArrayID);
+	glBindVertexArray(VertexArrayID);
 
 	//actually draw from vertex 0, 3 vertices
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-   glBindVertexArray(0);
+	glBindVertexArray(0);
 
 	prog->unbind();
 
@@ -177,14 +172,14 @@ static void render()
 
 int main(int argc, char **argv)
 {
-   if(argc < 2) {
-      cout << "Please specify the resource directory." << endl;
-      return 0;
-   }
-   RESOURCE_DIR = argv[1] + string("/");
+	if(argc < 2) {
+		cout << "Please specify the resource directory." << endl;
+		return 0;
+	}
+	RESOURCE_DIR = argv[1] + string("/");
 
 	/* your main will always include a similar set up to establish your window
-      and GL context, etc. */
+		and GL context, etc. */
 
 	// Set error callback as openGL will report errors but they need a call back
 	glfwSetErrorCallback(error_callback);
@@ -208,10 +203,9 @@ int main(int argc, char **argv)
 	}
 	// Make the window's context current.
 	glfwMakeContextCurrent(window);
-	// Initialize GLEW.
-	glewExperimental = true;
-	if(glewInit() != GLEW_OK) {
-		cerr << "Failed to initialize GLEW" << endl;
+	// Initialize GLAD
+	if(!gladLoadGL()) {
+		cerr << "Failed to initialize GLAD" << endl;
 		return -1;
 	}
 	glGetError();
