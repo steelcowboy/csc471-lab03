@@ -1,6 +1,5 @@
 /*
-ZJ Wood CPE 471 Lab 3 base code - includes use of glee
-https://github.com/nshkurkin/glee
+ZJ Wood CPE 471 Lab 3 base code 
 */
 
 #include <iostream>
