@@ -1,27 +1,12 @@
-#include "Program.h"
 
+#include "Program.h"
 #include <iostream>
 #include <cassert>
 
 #include "GLSL.h"
 
-using namespace std;
 
-Program::Program() :
-	vShaderName(""),
-	fShaderName(""),
-	pid(0),
-	verbose(true)
-{
-
-}
-
-Program::~Program()
-{
-
-}
-
-void Program::setShaderNames(const string &v, const string &f)
+void Program::setShaderNames(const std::string &v, const std::string &f)
 {
 	vShaderName = v;
 	fShaderName = f;
@@ -47,7 +32,7 @@ bool Program::init()
 	if(!rc) {
 		if(isVerbose()) {
 			GLSL::printShaderInfoLog(VS);
-			cout << "Error compiling vertex shader " << vShaderName << endl;
+			std::cout << "Error compiling vertex shader " << vShaderName << std::endl;
 		}
 		return false;
 	}
@@ -58,7 +43,7 @@ bool Program::init()
 	if(!rc) {
 		if(isVerbose()) {
 			GLSL::printShaderInfoLog(FS);
-			cout << "Error compiling fragment shader " << fShaderName << endl;
+			std::cout << "Error compiling fragment shader " << fShaderName << std::endl;
 		}
 		return false;
 	}
@@ -72,7 +57,7 @@ bool Program::init()
 	if(!rc) {
 		if(isVerbose()) {
 			GLSL::printProgramInfoLog(pid);
-			cout << "Error linking shaders " << vShaderName << " and " << fShaderName << endl;
+			std::cout << "Error linking shaders " << vShaderName << " and " << fShaderName << std::endl;
 		}
 		return false;
 	}
@@ -91,34 +76,34 @@ void Program::unbind()
 	glUseProgram(0);
 }
 
-void Program::addAttribute(const string &name)
+void Program::addAttribute(const std::string &name)
 {
 	attributes[name] = GLSL::getAttribLocation(pid, name.c_str(), isVerbose());
 }
 
-void Program::addUniform(const string &name)
+void Program::addUniform(const std::string &name)
 {
 	uniforms[name] = GLSL::getUniformLocation(pid, name.c_str(), isVerbose());
 }
 
-GLint Program::getAttribute(const string &name) const
+GLint Program::getAttribute(const std::string &name) const
 {
-	map<string,GLint>::const_iterator attribute = attributes.find(name.c_str());
+	std::map<std::string, GLint>::const_iterator attribute = attributes.find(name.c_str());
 	if(attribute == attributes.end()) {
 		if(isVerbose()) {
-			cout << name << " is not an attribute variable" << endl;
+			std::cout << name << " is not an attribute variable" << std::endl;
 		}
 		return -1;
 	}
 	return attribute->second;
 }
 
-GLint Program::getUniform(const string &name) const
+GLint Program::getUniform(const std::string &name) const
 {
-	map<string,GLint>::const_iterator uniform = uniforms.find(name.c_str());
+	std::map<std::string, GLint>::const_iterator uniform = uniforms.find(name.c_str());
 	if(uniform == uniforms.end()) {
 		if(isVerbose()) {
-			cout << name << " is not a uniform variable" << endl;
+			std::cout << name << " is not a uniform variable" << std::endl;
 		}
 		return -1;
 	}

@@ -73,4 +73,4 @@ public:
 
 };
 
-#endif /* LAB471_MATRIXSTACK_H_INCLUDED */
+#endif // LAB471_PROGRAM_H_INCLUDED
