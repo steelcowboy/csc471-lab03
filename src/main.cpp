@@ -20,7 +20,7 @@ using namespace glm;
 int pixW, pixH;
 
 GLFWwindow *window; // Main application window
-string RESOURCE_DIR = ""; // Where the resources are loaded from
+string RESOURCE_DIR = "../resources/"; // Where the resources are loaded from
 shared_ptr<Program> prog; //our shader program
 
 /* Global data associated with triangle geometry - this will likely vary
@@ -171,11 +171,9 @@ static void render()
 
 int main(int argc, char **argv)
 {
-	if(argc < 2) {
-		cout << "Please specify the resource directory." << endl;
-		return 0;
+	if(argc >= 2) {
+		RESOURCE_DIR = argv[1] + string("/");
 	}
-	RESOURCE_DIR = argv[1] + string("/");
 
 	/* your main will always include a similar set up to establish your window
 		and GL context, etc. */
