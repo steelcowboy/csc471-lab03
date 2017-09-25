@@ -46,9 +46,9 @@ bool Program::init()
 	// Compile vertex shader
 	CHECKED_GL_CALL(glCompileShader(VS));
 	CHECKED_GL_CALL(glGetShaderiv(VS, GL_COMPILE_STATUS, &rc));
-	if(!rc)
+	if (!rc)
 	{
-		if(isVerbose())
+		if (isVerbose())
 		{
 			GLSL::printShaderInfoLog(VS);
 			std::cout << "Error compiling vertex shader " << vShaderName << std::endl;
@@ -59,9 +59,9 @@ bool Program::init()
 	// Compile fragment shader
 	CHECKED_GL_CALL(glCompileShader(FS));
 	CHECKED_GL_CALL(glGetShaderiv(FS, GL_COMPILE_STATUS, &rc));
-	if(!rc)
+	if (!rc)
 	{
-		if(isVerbose())
+		if (isVerbose())
 		{
 			GLSL::printShaderInfoLog(FS);
 			std::cout << "Error compiling fragment shader " << fShaderName << std::endl;
@@ -111,9 +111,9 @@ void Program::addUniform(const std::string &name)
 GLint Program::getAttribute(const std::string &name) const
 {
 	std::map<std::string, GLint>::const_iterator attribute = attributes.find(name.c_str());
-	if(attribute == attributes.end())
+	if (attribute == attributes.end())
 	{
-		if(isVerbose())
+		if (isVerbose())
 		{
 			std::cout << name << " is not an attribute variable" << std::endl;
 		}
@@ -125,9 +125,9 @@ GLint Program::getAttribute(const std::string &name) const
 GLint Program::getUniform(const std::string &name) const
 {
 	std::map<std::string, GLint>::const_iterator uniform = uniforms.find(name.c_str());
-	if(uniform == uniforms.end())
+	if (uniform == uniforms.end())
 	{
-		if(isVerbose())
+		if (isVerbose())
 		{
 			std::cout << name << " is not a uniform variable" << std::endl;
 		}

@@ -22,18 +22,18 @@ public:
 
 	WindowManager * windowManager = nullptr;
 
-	std::shared_ptr<Program> prog; //our shader program
+	// Our shader program
+	std::shared_ptr<Program> prog;
 
-	/* Global data associated with triangle geometry - this will likely vary
-		in later programs - so is left explicit for now  */
+	// Contains vertex information for OpenGL
 	GLuint VertexArrayID;
 
-	// data necessary to give our triangle data to OGL
-	GLuint vertexbuffer;
+	// Data necessary to give our triangle to OpenGL
+	GLuint VertexBufferID;
 
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
-		if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		{
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
@@ -56,7 +56,7 @@ public:
 			newPt[1] = 0;
 
 			std::cout << "converted:" << newPt[0] << " " << newPt[1] << std::endl;
-			glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
 			//update the vertex array with the updated points
 			glBufferSubData(GL_ARRAY_BUFFER, sizeof(float)*6, sizeof(float)*2, newPt);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -72,18 +72,17 @@ public:
 		glViewport(0, 0, width, height);
 	}
 
-
 	/*Note that any gl calls must always happen after a GL state is initialized */
-	void initGeom() {
-
+	void initGeom()
+	{
 		//generate the VAO
 		glGenVertexArrays(1, &VertexArrayID);
 		glBindVertexArray(VertexArrayID);
 
 		//generate vertex buffer to hand off to OGL
-		glGenBuffers(1, &vertexbuffer);
+		glGenBuffers(1, &VertexBufferID);
 		//set the current state to focus on our vertex buffer
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
 
 		static const GLfloat g_vertex_buffer_data[] =
 		{
@@ -181,7 +180,7 @@ public:
 int main(int argc, char **argv)
 {
 	std::string resourceDir = "../resources"; // Where the resources are loaded from
-	if(argc >= 2)
+	if (argc >= 2)
 	{
 		resourceDir = argv[1];
 	}

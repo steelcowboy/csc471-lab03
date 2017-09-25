@@ -95,16 +95,16 @@ const glm::mat4 &MatrixStack::topMatrix() const
 
 void MatrixStack::print(const glm::mat4 &mat, const char *name)
 {
-	if(name) {
+	if (name) {
 		printf("%s = [\n", name);
 	}
-	for(int i = 0; i < 4; ++i) {
-		for(int j = 0; j < 4; ++j) {
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
 			printf("%- 5.2f ", mat[i][j]);
 		}
 		printf("\n");
 	}
-	if(name) {
+	if (name) {
 		printf("];");
 	}
 	printf("\n");

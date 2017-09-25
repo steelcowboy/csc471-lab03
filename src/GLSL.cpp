@@ -91,7 +91,7 @@ void printProgramInfoLog(GLuint program)
 	if (infologLength > 0)
 	{
 		infoLog = new GLchar[infologLength];
-		if(infoLog == NULL)
+		if (infoLog == NULL)
 		{
 			puts("ERROR: Could not allocate InfoLog buffer");
 			exit(1);
@@ -114,7 +114,7 @@ void checkVersion()
 	{
 		printf("Invalid GL_VERSION format %d.%d\n", major, minor);
 	}
-	if(major < 2)
+	if (major < 2)
 	{
 		printf("This shader example will not work due to the installed Opengl version, which is %d.%d.\n", major, minor);
 		exit(0);
@@ -135,7 +135,7 @@ GLint getAttribLocation(const GLuint program, const char varname[], bool verbose
 GLint getUniformLocation(const GLuint program, const char varname[], bool verbose)
 {
 	GLint r = glGetUniformLocation(program, varname);
-	if(r < 0 && verbose)
+	if (r < 0 && verbose)
 	{
 		std::cerr << "WARN: "<< varname << " cannot be bound (it either doesn't exist or has been optimized away). safe_glUniform calls will silently ignore it.\n" << std::endl;
 	}
@@ -145,7 +145,7 @@ GLint getUniformLocation(const GLuint program, const char varname[], bool verbos
 
 void enableVertexAttribArray(const GLint handle)
 {
-	if(handle >= 0)
+	if (handle >= 0)
 	{
 		glEnableVertexAttribArray(handle);
 	}
@@ -153,7 +153,7 @@ void enableVertexAttribArray(const GLint handle)
 
 void disableVertexAttribArray(const GLint handle)
 {
-	if(handle >= 0)
+	if (handle >= 0)
 	{
 		glDisableVertexAttribArray(handle);
 	}
@@ -161,7 +161,7 @@ void disableVertexAttribArray(const GLint handle)
 
 void vertexAttribPointer(const GLint handle, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer)
 {
-	if(handle >= 0)
+	if (handle >= 0)
 	{
 		glVertexAttribPointer(handle, size, type, normalized, stride, pointer);
 	}

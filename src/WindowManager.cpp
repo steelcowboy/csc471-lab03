@@ -48,7 +48,8 @@ bool WindowManager::init(int const width, int const height)
 
 	// Create a windowed mode window and its OpenGL context.
 	windowHandle = glfwCreateWindow(width, height, "hello triangle", nullptr, nullptr);
-	if(! windowHandle) {
+	if (! windowHandle)
+	{
 		glfwTerminate();
 		return false;
 	}
