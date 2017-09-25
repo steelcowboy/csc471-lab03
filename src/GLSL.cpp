@@ -36,6 +36,16 @@ const char * errorString(GLenum err)
 	}
 }
 
+void printOpenGLErrors(const char *const Function, const char * const File, int const Line)
+{
+	GLenum Error = glGetError();
+	if (Error != GL_NO_ERROR)
+	{
+		const char *const ErrorString = errorString(Error);
+		printf("OpenGL error in file '%s' at line %d calling function '%s': '%s' '%d 0x%X'\n", File, Line, Function, ErrorString, Error, Error);
+	}
+}
+
 void checkError(const char *str)
 {
 	GLenum glErr = glGetError();
@@ -52,10 +62,8 @@ void checkError(const char *str)
 
 void printShaderInfoLog(GLuint shader)
 {
-	checkError(GET_FILE_LINE);
 	GLint infologLength = 0;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLength);
-	checkError(GET_FILE_LINE);
+	CHECKED_GL_CALL(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLength));
 
 	if (infologLength > 0)
 	{
@@ -67,21 +75,18 @@ void printShaderInfoLog(GLuint shader)
 		}
 
 		GLint charsWritten  = 0;
-		glGetShaderInfoLog(shader, infologLength, &charsWritten, infoLog);
+		CHECKED_GL_CALL(glGetShaderInfoLog(shader, infologLength, &charsWritten, infoLog));
 		printf("Shader InfoLog:\n%s\n\n", infoLog);
 		delete [] infoLog;
 	}
-	checkError(GET_FILE_LINE);
 }
 
 void printProgramInfoLog(GLuint program)
 {
 	GLchar *infoLog;
 
-	checkError(GET_FILE_LINE);
 	GLint infologLength = 0;
-	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infologLength);
-	checkError(GET_FILE_LINE);
+	CHECKED_GL_CALL(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infologLength));
 
 	if (infologLength > 0)
 	{
@@ -93,11 +98,10 @@ void printProgramInfoLog(GLuint program)
 		}
 
 		GLint charsWritten  = 0;
-		glGetProgramInfoLog(program, infologLength, &charsWritten, infoLog);
+		CHECKED_GL_CALL(glGetProgramInfoLog(program, infologLength, &charsWritten, infoLog));
 		printf("Program InfoLog:\n%s\n\n", infoLog);
 		delete [] infoLog;
 	}
-	checkError(GET_FILE_LINE);
 }
 
 void checkVersion()
