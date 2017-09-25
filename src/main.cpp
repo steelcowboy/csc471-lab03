@@ -1,5 +1,5 @@
 /*
-ZJ Wood CPE 471 Lab 3 base code 
+ZJ Wood CPE 471 Lab 3 base code
 */
 
 #include <iostream>
