@@ -20,10 +20,8 @@ You'll need the following if you don't have them already.
 	> sudo apt-get install libxrandr-dev
 	> sudo apt-get install libxinerama-dev
 	> sudo apt-get install libxcursor-dev
-
-Although GLM, GLFW, and GLEW are also available as packages, we'll download
-them separately. Feel free to get these packages, but we won't be using them
-for building our labs and assignments.
+	> sudo apt-get install libglfw3-dev
+	> sudo apt-get install libglfw3-dev
 
 
 Mac OS X
@@ -33,6 +31,8 @@ You can use homebrew/macports or install these manually.
 
 - Xcode developer tools. You'll need to log in with your Apple ID.
 - CMake (<http://cmake.org/download/>)
+- [GLM](http://brewformulas.org/Glm)
+- [GLFW3](http://brewformulas.org/glfw)
 
 Make sure the commands `g++` and `cmake` work from the command prompt.
 
@@ -49,79 +49,11 @@ You'll need to download these manually.
 
 Make sure the command `cmake` works from the command prompt.
 
+Additionally, download the latest [GLM](https://github.com/g-truc/glm/tags)
+and [64bit binaries for GLFW](https://github.com/glfw/glfw/releases/tag/3.2.1).
 
-Install GLM, GLFW, and GLEW
-=============================
-
-
-Lab machines
-------------
-
-For compatibility issues with the old version of g++ installed on the lab
-machines, we will be using these files on my home directory. Download these
-and extract them somewhere (e.g., `~/lib/`).
-
-- GLM: <http://github.com/g-truc/glm>
-- GLFW: cp ~zwood/lib/glfw-3.1.2.zip lib/.
-- GLEW: <http://glew.sourceforge.net/>
-- Compile the source by typing `make`. (This could take a while.)
-
-
-All platforms except lab machines
----------------------------------
-
-For all other platforms, you can download the latest versions from the web.
-For each of these libraries, download and extract them somewhere (e.g.,
-`~/lib`).  Most of these are also avilable on git - consider cloning from there... or you can get to github links from here
-
-- GLM: get the header from <http://github.com/g-truc/glm>.
-- GLFW: get the source from <http://www.glfw.org/download.html>.
-- GLEW
-    - OSX & Linux
-        - Get the source from <http://glew.sourceforge.net/>.
-        - do make extensions
-        - Compile the source by typing `make -j4`. (This could take a while.)
-    - Windows
-        - Get the Windows binaries from <http://glew.sourceforge.net/>.
-
-
-
-
-Set the environment variables for GLM, GLFW, and GLEW
-=======================================================
-
-
-OSX & Linux
------------
-
-In `~/.bash_profile` (or `~/.bashrc` if `.bash_profile` doesn't exist), add the
-following lines.
-
-	export GLM_INCLUDE_DIR=ABS_PATH_TO_GLM
-	export GLFW_DIR=ABS_PATH_TO_GLFW
-	export GLEW_DIR=ABS_PATH_TO_GLEW
-
-Set these variables to point to the directories that you extracted GLM,
-GLFW, and GLEW to.
-
-
-Windows
--------
-
-Control Panel -> System -> Advanced -> Environment Variables -> User Variables
-
-- Set `GLM_INCLUDE_DIR` to `/path/to/glm`
-- Set `GLFW_DIR` to `/path/to/GLFW`
-- Set `GLEW_DIR` to `/path/to/GLEW`
-
-Each of the `/path/to/*` should point to the absolute path of the libraries
-that you just installed.
-
-
-Important Note on Including GLEW
-------------------------------------------
-
-- If you're having trouble linking with GLEW, make sure you `#define GLEW_STATIC` before you `#include <GL/glew.h>`.
+Place these in your `Visual Studio 2017`/`SDKs` folder. You will need to create
+`SDKs`.
 
 
 Building and Running the Lab/Assignment
@@ -185,8 +117,26 @@ This will generate `Lab3.xcodeproj` project that you can open with Xcode.
   in release mode.
 
 
+Windows Visual Studio 2017
+--------------------------
+
+The provided `.sln` should work out of the box.
+
+
+- To build and run the project, right-click on `Lab3` in the project explorer
+  and then click on "Set as Startup Project." Then press F7 (Build Solution)
+  and then F5 (Start Debugging).
+- To add a commandline argument, right-click on `Lab3` in
+  the project explorer and then click on "Properties" and then click on
+  "Debugging."
+
+
 Windows Visual Studio 2015
 --------------------------
+
+Or on your own machine, if you would prefer to use CMake.
+
+Use [vcpkg](https://github.com/Microsoft/vcpkg) to install `glfw3` and `glm`.
 
 	> cmake ..
 
@@ -202,7 +152,7 @@ Other versions of Visual Studio are listed on the CMake page
 - To build and run the project, right-click on `Lab3` in the project explorer
   and then click on "Set as Startup Project." Then press F7 (Build Solution)
   and then F5 (Start Debugging).
-- To add a commandline argument (`../resources`), right-click on `Lab3` in
+- To add a commandline argument, right-click on `Lab3` in
   the project explorer and then click on "Properties" and then click on
   "Debugging."
 
