@@ -2,9 +2,24 @@
 #include "Program.h"
 #include <iostream>
 #include <cassert>
+#include <fstream>
 
 #include "GLSL.h"
 
+
+std::string readFileAsString(const std::string &fileName)
+{
+	std::string result;
+	std::ifstream fileHandle(fileName);
+
+	fileHandle.seekg(0, std::ios::end);
+	result.reserve((size_t) fileHandle.tellg());
+	fileHandle.seekg(0, std::ios::beg);
+
+	result.assign((std::istreambuf_iterator<char>(fileHandle)), std::istreambuf_iterator<char>());
+
+	return result;
+}
 
 void Program::setShaderNames(const std::string &v, const std::string &f)
 {
@@ -21,8 +36,10 @@ bool Program::init()
 	GLuint FS = glCreateShader(GL_FRAGMENT_SHADER);
 
 	// Read shader sources
-	const char *vshader = GLSL::textFileRead(vShaderName.c_str());
-	const char *fshader = GLSL::textFileRead(fShaderName.c_str());
+	std::string vShaderString = readFileAsString(vShaderName);
+	std::string fShaderString = readFileAsString(fShaderName);
+	const char *vshader = vShaderString.c_str();
+	const char *fshader = fShaderString.c_str();
 	glShaderSource(VS, 1, &vshader, NULL);
 	glShaderSource(FS, 1, &fshader, NULL);
 
