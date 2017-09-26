@@ -1,3 +1,18 @@
+/*
+ * Window Management helpers
+ *
+ * This class contains most of the GLFW3 code necessary to interface with the
+ * operating system. Tasks include creating a window and handling event
+ * callback, though GLFW3 is capable of more.
+ *
+ * You don't really need to worry about this file or WindowManager.cpp.
+ *
+ * Once you become more comfortable with C++ and would like to expand the
+ * functionality of your application, there are a few things you might be
+ * able to add or change here.
+ *
+ * Written by Ian Dunn, 9/24/2017
+ */
 
 #pragma  once
 
@@ -8,6 +23,8 @@
 #include <GLFW/glfw3.h>
 
 
+// This interface let's us write our own class that can be notified by input
+// events, such as key presses and mouse movement.
 class EventCallbacks
 {
 
@@ -22,6 +39,8 @@ public:
 
 };
 
+// This class is responsible for all window management code, i.e. GLFW3 code
+// You shouldn't have to touch this code for any of the early lab assignments
 class WindowManager
 {
 
@@ -43,6 +62,7 @@ public:
 
 protected:
 
+	// This class implements the singleton design pattern
 	static WindowManager * instance;
 
 	GLFWwindow *windowHandle = nullptr;
@@ -50,6 +70,12 @@ protected:
 
 private:
 
+	// What are these?!
+	//
+	// GLFW3 expects C-style callbacks, but we want to be able to use C++-style
+	// callbacks so that we can avoid global variables.
+	//
+	// This is a common trick or `idiom` that makes it possible
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 	static void mouse_callback(GLFWwindow *window, int button, int action, int mods);
 	static void resize_callback(GLFWwindow *window, int in_width, int in_height);
