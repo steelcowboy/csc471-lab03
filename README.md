@@ -1,11 +1,28 @@
 Lab 3 - Installing prerequisite software
 ========================================
 
-Lab machines
-------------
+Lab machines (Linux)
+--------------------
 
-The compiler and CMake should already be installed. Skip to "Install glm,
-GLFW, and GLEW" below.
+The compiler, CMake, GLM, and GLFW3 should already be installed.
+Skip to "Building and Running the Lab/Assignment" below.
+
+
+Lab machines (Windows)
+----------------------
+
+Visual Studio is installed, and solution files are provided, but you must install `GLM` and `GLFW3` locally.
+
+First, navigate to `Document` and enter the `Visual Studio 2017` folder.
+In this folder, create a folder called `SDKs`.
+
+Next, download `glm-0.9.8.5.zip` at [this location](https://github.com/g-truc/glm/releases/tag/0.9.8.5).
+Extract the `glm` folder into your `SDKs` folder, then rename it to `glm-0.9.8.5`.
+
+Finally, download `glfw-3.2.1.bin.WIN64.zip` at [this location](https://github.com/glfw/glfw/releases/tag/3.2.1).
+Extract the `glfw-3.2.1.bin.WIN64` folder into your `SDKs` folder.
+
+Skip to "Building and Running the Lab/Assignment" below.
 
 
 Ubuntu Linux
@@ -40,30 +57,30 @@ Make sure the commands `g++` and `cmake` work from the command prompt.
 Windows
 -------
 
-You'll need to download these manually.
+First, download **Visual Studio Community 2017**.
+Make sure to install the C++ development tools.
 
-- Visual Studio (Visual C++). Any version should work. I've tested Visual
-  Studio 2015 (aka version 14) on Windows 8.
+At this point, you can choose to follow the "Lab machines (Windows)" instructions above.
+
+Or, if you would rather do CMake (or if you have a different version of Visual Studio and don't want to change),
+follow these steps:
+
+Download these:
+
 - CMake (<http://cmake.org/download/>). Make sure to add CMake to the system
   path when asked to do so.
+- [vcpkg](https://github.com/Microsoft/vcpkg)
 
 Make sure the command `cmake` works from the command prompt.
 
-Additionally, download the latest [GLM](https://github.com/g-truc/glm/tags)
-and [64bit binaries for GLFW](https://github.com/glfw/glfw/releases/tag/3.2.1).
-
-Place these in your `Visual Studio 2017`/`SDKs` folder. You will need to create
-`SDKs`.
+Now use `vcpkg` to install `glm` and `glfw3`
 
 
 Building and Running the Lab/Assignment
 =======================================
 
-
-All platforms
--------------
-
-Download and extract the lab file:
+All platforms (except Lab windows)
+----------------------------------
 
 We'll perform an "out-of- source" build, which means that the binary files
 will not be in the same directory as the source files. In the folder that
@@ -120,8 +137,7 @@ This will generate `Lab3.xcodeproj` project that you can open with Xcode.
 Windows Visual Studio 2017
 --------------------------
 
-The provided `.sln` should work out of the box.
-
+The provided `.sln` should work out of the box, provided you installed the two dependencies.
 
 - To build and run the project, right-click on `Lab3` in the project explorer
   and then click on "Set as Startup Project." Then press F7 (Build Solution)
