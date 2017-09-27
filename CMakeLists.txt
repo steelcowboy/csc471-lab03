@@ -17,11 +17,17 @@ include_directories("ext/glad/include")
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS} ${GLSL})
 
 # Add GLFW
-find_package(PkgConfig REQUIRED)
-pkg_search_module(GLFW REQUIRED glfw3)
-include_directories(${GLFW_INCLUDE_DIRS})
-target_link_libraries(${CMAKE_PROJECT_NAME} ${GLFW_LIBRARIES})
-# target_link_libraries(${CMAKE_PROJECT_NAME} ${GLFW_STATIC_LIBRARIES})
+find_package(PkgConfig)
+if (PkgConfig_FOUND)
+  message(STATUS "Found")
+  pkg_search_module(GLFW REQUIRED glfw3)
+  include_directories(${GLFW_INCLUDE_DIRS})
+  target_link_libraries(${CMAKE_PROJECT_NAME} ${GLFW_LIBRARIES})
+else()
+  find_package(glfw3 REQUIRED)
+  include_directories(${GLFW_INCLUDE_DIRS})
+  target_link_libraries(${CMAKE_PROJECT_NAME} glfw)
+endif()
 
 
 # OS specific options and libraries
