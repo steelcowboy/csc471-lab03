@@ -30,6 +30,19 @@ else()
   target_link_libraries(${CMAKE_PROJECT_NAME} glfw)
 endif()
 
+# Add GLM
+# Get the GLM environment variable. Since GLM is a header-only library, we
+# just need to add it to the include directory.
+set(GLM_INCLUDE_DIR "$ENV{GLM_INCLUDE_DIR}")
+if(GLM_INCLUDE_DIR)
+  include_directories(${GLM_INCLUDE_DIR})
+  message(STATUS "GLM environment variable found")
+else()
+# If the GLM_INCLUDE_DIR environment variable is not set, we assume
+# the user has installed GLM properly on their system
+  message(STATUS "GLM environment variable not found, GLM must be installed with the system")
+endif()
+
 
 # OS specific options and libraries
 if(WIN32)
