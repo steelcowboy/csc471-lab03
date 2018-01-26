@@ -31,6 +31,10 @@ public:
 	// Data necessary to give our triangle to OpenGL
 	GLuint VertexBufferID;
 
+    // Color Stuff
+    GLuint ColorArrayID;
+    GLuint ColorBufferID;
+
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -79,17 +83,48 @@ public:
 		glGenVertexArrays(1, &VertexArrayID);
 		glBindVertexArray(VertexArrayID);
 
+        
 		//generate vertex buffer to hand off to OGL
 		glGenBuffers(1, &VertexBufferID);
 		//set the current state to focus on our vertex buffer
 		glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
 
+        // Same thing for colors 
+		//glGenVertexArrays(1, &ColorArrayID);
+		//glBindVertexArray(ColorArrayID);
+		//glGenBuffers(1, &ColorBufferID);
+		//glBindBuffer(GL_ARRAY_BUFFER, ColorBufferID);
+
 		static const GLfloat g_vertex_buffer_data[] =
 		{
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.7f, 0.0f
+			-0.7f, -0.7f, 0.0f,
+			0.7f, -0.7f, 0.0f,
+			0.0f, 0.7f, 0.0f,
+
+            0.2f, 0.7f, 0.0f,
+            0.9f, 0.7f, 0.0f,
+            0.9f, -0.7f, 0.0f,
+
+            -0.2f, 0.7f, 0.0f,
+            -0.9f, 0.7f, 0.0f,
+            -0.9f, -0.7f, 0.0f
 		};
+
+		static const GLfloat g_vertex_color_data[] =
+		{
+			1.0f, 0.0f, 1.0f,
+			0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 1.0f,
+
+			0.0f, 0.0f, 1.0f,
+			0.0f, 0.0f, 1.0f,
+			1.0f, 0.0f, 0.0f,
+
+			0.0f, 0.0f, 1.0f,
+			0.0f, 0.0f, 1.0f,
+			1.0f, 0.0f, 0.0f,
+		};
+        
 		//actually memcopy the data - only do this once
 		glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_DYNAMIC_DRAW);
 
@@ -100,6 +135,10 @@ public:
 
 		glBindVertexArray(0);
 
+        // Now for the colors I guess
+		//glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_color_data), g_vertex_color_data, GL_DYNAMIC_DRAW);
+		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+		//glBindVertexArray(1);
 	}
 
 	//General OGL initialization - set OGL state here
@@ -108,7 +147,7 @@ public:
 		GLSL::checkVersion();
 
 		// Set background color.
-		glClearColor(0.9f, 0.2f, 0.0f, 1.0f);
+		glClearColor(0.012f, 0.098f, 0.475f, 1.0f);
 		// Enable z-buffer test.
 		glEnable(GL_DEPTH_TEST);
 
@@ -164,7 +203,7 @@ public:
 		glBindVertexArray(VertexArrayID);
 
 		//actually draw from vertex 0, 3 vertices
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 3*3);
 
 		glBindVertexArray(0);
 
