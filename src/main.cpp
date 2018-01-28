@@ -14,6 +14,13 @@ ZJ Wood CPE 471 Lab 3 base code - I. Dunn class re-write
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+float p2wX(float xp, int w, int h) {
+    return (2.0/h)*xp - ((float)w/h);
+}
+
+float p2wY(float yp, int w, int h) {
+    return (2.0/h)*(h-yp) - 1;
+}
 
 class Application : public EventCallbacks
 {
@@ -32,8 +39,7 @@ public:
 	GLuint VertexBufferID;
 
     // Color Stuff
-    GLuint ColorArrayID;
-    GLuint ColorBufferID;
+    GLuint ColorBuffer;
 
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
@@ -54,10 +60,12 @@ public:
 			glfwGetCursorPos(window, &posX, &posY);
 			std::cout << "Pos X " << posX <<  " Pos Y " << posY << std::endl;
 
+            int width, height;
+            glfwGetFramebufferSize(window, &width, &height);
 			//change this to be the points converted to WORLD
 			//THIS IS BROKEN< YOU GET TO FIX IT - yay!
-			newPt[0] = 0;
-			newPt[1] = 0;
+			newPt[0] = p2wX(posX, width, height);
+			newPt[1] = p2wY(posY, width, height);
 
 			std::cout << "converted:" << newPt[0] << " " << newPt[1] << std::endl;
 			glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
@@ -89,12 +97,6 @@ public:
 		//set the current state to focus on our vertex buffer
 		glBindBuffer(GL_ARRAY_BUFFER, VertexBufferID);
 
-        // Same thing for colors 
-		//glGenVertexArrays(1, &ColorArrayID);
-		//glBindVertexArray(ColorArrayID);
-		//glGenBuffers(1, &ColorBufferID);
-		//glBindBuffer(GL_ARRAY_BUFFER, ColorBufferID);
-
 		static const GLfloat g_vertex_buffer_data[] =
 		{
 			-0.7f, -0.7f, 0.0f,
@@ -109,6 +111,18 @@ public:
             -0.9f, 0.7f, 0.0f,
             -0.9f, -0.7f, 0.0f
 		};
+
+		//actually memcopy the data - only do this once
+		glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_DYNAMIC_DRAW);
+
+		//we need to set up the vertex array
+		glEnableVertexAttribArray(0);
+		//key function to get up how many elements to pull out at a time (3)
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+
+        // Now for the colors I guess
+        glGenBuffers(1, &ColorBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, ColorBuffer);
 
 		static const GLfloat g_vertex_color_data[] =
 		{
@@ -125,20 +139,12 @@ public:
 			1.0f, 0.0f, 0.0f,
 		};
         
-		//actually memcopy the data - only do this once
-		glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_color_data), g_vertex_color_data, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
 
-		//we need to set up the vertex array
-		glEnableVertexAttribArray(0);
-		//key function to get up how many elements to pull out at a time (3)
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
-
-		glBindVertexArray(0);
-
-        // Now for the colors I guess
-		//glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_color_data), g_vertex_color_data, GL_DYNAMIC_DRAW);
-		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
-		//glBindVertexArray(1);
+        CHECKED_GL_CALL(glBindVertexArray(0));
+		//glBindVertexArray(0);
 	}
 
 	//General OGL initialization - set OGL state here
@@ -159,6 +165,7 @@ public:
 		prog->addUniform("P");
 		prog->addUniform("MV");
 		prog->addAttribute("vertPos");
+		prog->addAttribute("vertexColor");
 	}
 
 
